@@ -55,15 +55,17 @@ public class SsoApplication {
 		}
 		SpringApplication.run(SsoApplication.class, args);
 	}
-	
+
 	@Controller
-	public static class LoginErrors {
-		
-		@RequestMapping("/dashboard/login")
-		public String dashboard() {
-			return "redirect:/#/";
+	public static class AngularRoutesRedirectConfiguration {
+
+		// Match everything without a suffix (so not a static resource)
+		@RequestMapping(value = "/{[path:[^\\.]*}")
+		public String redirect() {
+			// Forward to home page so that route is preserved.
+			return "forward:/";
 		}
-		
+
 	}
 
 	@Component
@@ -71,13 +73,12 @@ public class SsoApplication {
 
 		@Override
 		public void match(RequestMatchers matchers) {
-			matchers.antMatchers("/dashboard/**");
+			matchers.antMatchers("/", "/dashboard/**");
 		}
 
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
-			http.antMatcher("/dashboard/**").authorizeRequests().anyRequest()
-					.authenticated().and().csrf()
+			http.authorizeRequests().anyRequest().authenticated().and().csrf()
 					.csrfTokenRepository(csrfTokenRepository()).and()
 					.addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
 		}

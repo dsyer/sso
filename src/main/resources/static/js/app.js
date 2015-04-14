@@ -1,14 +1,17 @@
 angular.module('sso', [ 'ngRoute', 'ngResource' ]).config(
-		function($routeProvider) {
+		function($httpProvider, $routeProvider, $locationProvider) {
 
-			$routeProvider.otherwise('/');
+			$locationProvider.html5Mode(true);
+
 			$routeProvider.when('/', {
 				templateUrl : 'home.html',
 				controller : 'home'
 			}).when('/dashboard', {
 				templateUrl : 'dashboard.html',
 				controller : 'dashboard'
-			});
+			}).otherwise('/');
+
+			$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 		}).controller('navigation', function($scope, $http, $window, $route) {
 	$scope.tab = function(route) {
@@ -20,14 +23,6 @@ angular.module('sso', [ 'ngRoute', 'ngResource' ]).config(
 			$scope.authenticated = true;
 		}).error(function() {
 			$scope.authenticated = false;
-		});
-	}
-	$scope.logout = function() {
-		$http.post('/dashboard/logout', {}).success(function() {
-			delete $scope.user;
-			$scope.authenticated = false;
-			// Force reload of home page to reset all state after logout
-			$window.location.hash = '';
 		});
 	};
 }).controller('home', function() {

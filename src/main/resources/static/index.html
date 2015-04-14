@@ -1,5 +1,6 @@
 <html>
 <head>
+<base href="/" />
 <link rel="stylesheet" href="webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
 <style type="text/css">
 [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -10,10 +11,8 @@
 <body ng-app="sso" ng-cloak class="ng-cloak">
 	<div ng-controller="navigation" class="container">
 		<ul class="nav nav-pills" role="tablist">
-			<li ng-class="{active:tab('home')}"><a href='#/'>home</a></li>
-			<li ng-class="{active:tab('dashboard')}" ng-show="authenticated"><a href='#/dashboard'>dashboard</a></li>
-			<li><a href='dashboard/login'>login</a></li>
-			<li ng-show="authenticated"><a href='' ng-click="logout()">logout</a></li>
+			<li ng-class="{active:tab('home')}"><a href='/'>home</a></li>
+			<li ng-class="{active:tab('dashboard')}"><a href='/dashboard'>dashboard</a></li>
 		</ul>
 		<div>Authenticated: {{user}}</div>
 	</div>
